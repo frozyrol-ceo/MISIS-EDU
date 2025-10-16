@@ -4,73 +4,151 @@
 """
 
 
-def format_record(rec: tuple[str, str, float]) -> str:
+def validate_record_structure(rec) -> None:
+    """
+    Проверяет структуру записи (тип и количество элементов).
     
-    # Проверка, что на вход поступает именно tuple
+    Args:
+        rec: Запись для проверки
+        
+    Raises:
+        TypeError: Если rec не является tuple
+        ValueError: Если количество элементов не равно 3
+    """
     if not isinstance(rec, tuple):
         raise TypeError(f"Ожидается tuple, получен {type(rec).__name__}")
     
-    # Проверка, что в tuple ровно 3 элемента
     if len(rec) != 3:
         raise ValueError(f"Ожидается ровно 3 элемента, получено {len(rec)}")
+
+
+def validate_field_types(fio: str, group: str, gpa: float) -> None:
+    """
+    Проверяет типы полей записи.
     
-    fio, group, gpa = rec
-    
-    # Проверка типов
+    Args:
+        fio: ФИО студента
+        group: Группа студента
+        gpa: GPA студента
+        
+    Raises:
+        TypeError: Если типы полей не соответствуют ожидаемым
+    """
     if not isinstance(fio, str):
         raise TypeError("ФИО должно быть строкой")
     if not isinstance(group, str):
         raise TypeError("Группа должна быть строкой")
     if not isinstance(gpa, (int, float)):
         raise TypeError("GPA должен быть числом")
+
+
+def parse_fio_parts(fio: str) -> list[str]:
+    """
+    Разбивает ФИО на части и нормализует регистр.
     
-    # Очистка и нормализация ФИО
-    # Убираем лишние пробелы и разбиваем на части
+    Args:
+        fio: Строка с ФИО
+        
+    Returns:
+        Список нормализованных частей ФИО
+        
+    Raises:
+        ValueError: Если ФИО пустое
+    """
     fio_parts = fio.strip().split()
-    fio_parts = [part for part in fio_parts if part]  # Удаляем пустые части
+    fio_parts = [part for part in fio_parts if part]
     
     if not fio_parts:
         raise ValueError("ФИО не может быть пустым")
     
-    # Нормализуем регистр (первая буква заглавная, остальные строчные)
-    fio_parts = [part.capitalize() for part in fio_parts]
+    return [part.capitalize() for part in fio_parts]
+
+
+def format_fio_with_initials(fio_parts: list[str]) -> str:
+    """
+    Форматирует ФИО в формат "Фамилия И.О."
     
-    # Формируем фамилию и инициалы
-    if len(fio_parts) < 1:
-        raise ValueError("ФИО должно содержать хотя бы фамилию")
-    
+    Args:
+        fio_parts: Список частей ФИО (фамилия, имя, отчество)
+        
+    Returns:
+        Отформатированная строка ФИО
+    """
     surname = fio_parts[0]
     
-    # Формируем инициалы из имени и отчества (если есть)
-    initials = []
-    for i in range(1, len(fio_parts)):
-        if fio_parts[i]:
-            initials.append(fio_parts[i][0].upper() + ".")
+    # Формируем инициалы из имени и отчества
+    initials = [part[0].upper() + "." for part in fio_parts[1:] if part]
     
-    # Формируем строку с инициалами
     if initials:
-        formatted_fio = f"{surname} {''.join(initials)}"
-    else:
-        formatted_fio = surname
+        return f"{surname} {''.join(initials)}"
+    return surname
+
+
+def normalize_fio(fio: str) -> str:
+    """
+    Нормализует и форматирует ФИО студента.
     
-    # Проверка группы
+    Args:
+        fio: Строка с ФИО
+        
+    Returns:
+        Отформатированная строка ФИО в формате "Фамилия И.О."
+        
+    Raises:
+        ValueError: Если ФИО некорректно
+    """
+    fio_parts = parse_fio_parts(fio)
+    return format_fio_with_initials(fio_parts)
+
+
+def validate_group(group: str) -> str:
+    """
+    Проверяет и нормализует название группы.
+    
+    Args:
+        group: Название группы
+        
+    Returns:
+        Нормализованное название группы
+        
+    Raises:
+        ValueError: Если группа пустая
+    """
     group = group.strip()
     if not group:
         raise ValueError("Группа не может быть пустой")
-    
-    # Форматируем строку
-    formatted_str = f"{formatted_fio}, гр. {group}, GPA {gpa:.2f}"
-    
-    return formatted_str
+    return group
 
 
-def main():
+def format_record(rec: tuple[str, str, float]) -> str:
+    """
+    Форматирует запись о студенте в строку.
     
-    print("ЗАДАНИЕ 3: Форматирование записей студентов")
+    Args:
+        rec: Кортеж из трёх элементов (ФИО, группа, GPA)
+        
+    Returns:
+        Отформатированная строка вида "Фамилия И.О., гр. Группа, GPA X.XX"
+        
+    Raises:
+        TypeError: Если rec не tuple или типы полей некорректны
+        ValueError: Если структура или значения полей некорректны
+    """
+    validate_record_structure(rec)
     
+    fio, group, gpa = rec
     
+    validate_field_types(fio, group, gpa)
+    
+    formatted_fio = normalize_fio(fio)
+    validated_group = validate_group(group)
+    
+    return f"{formatted_fio}, гр. {validated_group}, GPA {gpa:.2f}"
+
+
+def run_success_tests() -> None:
+    """Выполняет тесты с корректными данными."""
     print("\nФункция format_record(rec)")
-    
     
     test_cases = [
         ("Иванов Иван Иванович", "BIVT-25", 4.6),
@@ -85,10 +163,11 @@ def main():
         result = format_record(rec)
         print(f"\nВход: {rec}")
         print(f"Результат: {result}")
-    
-    # Тесты на ошибки
+
+
+def run_error_tests() -> None:
+    """Выполняет тесты на обработку ошибок."""
     print("\n\nТесты на обработку ошибок:")
-    
     
     error_cases = [
         (["Иванов Иван", "BIVT-25", 4.5], "Список вместо tuple"),
@@ -106,10 +185,15 @@ def main():
             print(f"\n{description}:")
             print(f"  Вход: {rec}")
             print(f"  Ошибка: {type(e).__name__}: {e}")
+
+
+def main():
+    """Главная функция для запуска всех тестов."""
+    print("ЗАДАНИЕ 3: Форматирование записей студентов")
     
-    
+    run_success_tests()
+    run_error_tests()
 
 
 if __name__ == "__main__":
     main()
-
