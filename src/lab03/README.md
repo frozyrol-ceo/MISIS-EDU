@@ -414,10 +414,13 @@ python3 src/lib/text.py
 ## Скриншоты работы программы
 
 ### Скриншот 1: Запуск модульных тестов
-![Тесты text.py](../../img/lab03/img01.png)
+![Тест 1  text.py](../../img/lab03/A_1f.png)
+![Тест 2 text.py](../../img/lab03/A_2f.png)
+![Тест 3 text.py](../../img/lab03/A_3f.png)
 
-### Скриншот 2: Простой пример
-![Тесты text_stats.py](../../img/lab03/img02.png)
+### Скриншот 2: 
+![Тест text_stats.py](../../img/lab03/B_1.png)
+![Тест text_stats.py вывод с таблицей](../../img/lab03/B_1+.png)
 
 ## Особенности реализации
 
