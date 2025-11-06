@@ -5,11 +5,7 @@ from typing import Iterable, Sequence
 
 def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     """
-    Функция для чтения текста из файла в одну строку
-    для выбора другой кодировки нужно передать значение аргумента в функцию
-    пример:
-    read_text("Ваш_путь", "cp1251") - в данном случае кодировка будет cp1251 вместо utf-8
-    """
+    Чтение текста из файла в котировке 
     p = Path(path)
     return ''.join(p.read_text(encoding=encoding).split())
 
@@ -17,8 +13,7 @@ def read_text(path: str | Path, encoding: str = "utf-8") -> str:
 
 def write_csv(rows: list[tuple | list], path: str | Path, header: tuple[str, ...] | None = None) -> None:
     """
-    Функция для создания/перезаписывания csv
-    есть проверка на длину строк на входе
+    Функция для обработки CSV
     """
     p, rows = Path(path), list(rows)
     for i in rows: 
