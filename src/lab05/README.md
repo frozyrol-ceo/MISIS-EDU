@@ -47,11 +47,11 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
 csv_to_json('data/samples/test.csv', 'src/lab05/csv_to_json_example.json')
 ```
 
-![01.jpg](/img/lab05/test.csv.png)
+![01.jpg](img/lab05/csv_to_json_ex.png)
 Валидация расширения файла выполняется с помощью среза `[-4::] != '.json'`
 После загрузки данных проверяется, что список не пуст и первый элемент является словарём
 
-![02.jpg](/img/lab05/csv_to_json_ex.png)
+![02.jpg](img/lab05/csv_to_json_ex.png)
 Аналогичным образом выполняется проверка формата входных данных для функции csv_to_json
 
 # Задание B
@@ -89,5 +89,5 @@ csv_to_xlsx('data/samples/test.csv', 'src/lab05/csv_to_xlsx.xlsx')
 Затем для каждой колонки определяем максимальную длину текста в ячейках, чтобы установить оптимальную ширину столбца
 
 Полученное значение применяется для настройки ширины соответствующего столбца
-![excell example](/img/lab05/excell_ex.png)
+![excell example](img/lab05/excell_ex.png)
 
