@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Ivan Petrov",
+    "age": 28,
+    "department": "Engineering",
+    "salary": 85000
+  },
+  {
+    "name": "Maria Sidorova",
+    "age": 35,
+    "department": "Marketing",
+    "salary": 72000
+  },
+  {
+    "name": "Alexey Volkov",
+    "age": 42,
+    "department": "Sales",
+    "salary": 68000
+  },
+  {
+    "name": "Elena Morozova",
+    "age": 29,
+    "department": "HR",
+    "salary": 65000
+  }
+]
+
